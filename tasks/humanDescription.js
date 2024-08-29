@@ -8,12 +8,13 @@ const person = {
     isStudent: true,
   };
   
-  function describePerson(person){
-      return(`${person.name} is ${person.age} years old and is a ${person.isStudent ? 'is a student' : 'not a student'}.`);
-  }
-  
-  console.log(describePerson(person)); // "Alice is 25 years old and is a student."
+  const describePerson = () => (`${person.name} is ${person.age} years old and is a ${person.isStudent ? 'is a student' : 'not a student'}.`);
 
+
+  // function describePerson(person){
+  //     return(`${person.name} is ${person.age} years old and is a ${person.isStudent ? 'is a student' : 'not a student'}.`);
+  // }
+  
 
 
   //------ Деструктуризация ------ //
@@ -28,4 +29,4 @@ const person = {
 //       return(`${name} is ${age} years old and is a ${isStudent ? 'is a student' : 'not a student'}.`);
 //   }
   
-//   console.log(describePerson(person)); // "Alice is 25 years old and is a student."
+   console.log(describePerson(person)); // "Alice is 25 years old and is a student."

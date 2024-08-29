@@ -10,6 +10,8 @@
 
 # production
 /build
+/week_2
+generateFibonacciSeries.js
 
 # misc
 .DS_Store
