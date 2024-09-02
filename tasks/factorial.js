@@ -10,7 +10,18 @@ function factorial(num){
     for(let i = 1; i <= num; i++){
         number *= i;
     }
-    return num;
+    return number;
+}
+
+
+/* Рекурсивный способ */
+
+function factorial(num){
+    if(num === 1){
+        return num;
+    } else {
+        return factorial(num - 1) * num;
+    }
 }
 
 
