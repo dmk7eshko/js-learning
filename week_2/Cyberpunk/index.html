@@ -32,12 +32,24 @@
   <!-- Main Content -->
   <div class="container-fluid p-0">
     <div class="banner">
-      <img src="./src/img/11.jpg" alt="banner img">
+      <div class="slider">
+        <div class="slide active">
+          <img src="./src/img/11.jpg" alt="banner img">
+        </div>
+        <div class="slide">
+          <img src="./src/img/111.jpg" alt="banner img">
+        </div>
+        <div class="slide">
+          <img src="./src/img/Untitled-1 2.jpg" alt="banner img">
+        </div>
+        
+      </div>
+      
       <div class="container banner-text_wrap">
         <div class="row justify-content-end">
           <div class="banner-text bordered col-md-6 col-12">
             <p class="title">Доступно на всех платформах</p>
-            <button class="btn btn-primary">Узнать больше</button>
+            <button class="btn btn-primary learn-more">Узнать больше</button>
           </div>
         </div>
       </div>
@@ -48,7 +60,7 @@
     <div class="container">
       <div class="row">
         <h2 class="title">Найт-Сити изменит тебя навсегда!</h2>
-        <p><mark>Cyberpunk 2077</mark> — приключенческая ролевая игра, действие которой происходит в мегаполисе
+        <p><span class="marker">Cyberpunk 2077</span> — приключенческая ролевая игра, действие которой происходит в мегаполисе
           Найт-Сити, где власть, роскошь и модификации тела ценятся выше всего. Ты играешь за V, наёмника в поисках
           устройства, позволяющего обрести бессмертие. Ты сможешь менять киберимпланты, навыки и стиль игры своего
           персонажа, исследуя открытый мир, где твои поступки влияют на ход сюжета и всё, что тебя окружает.</p>
@@ -68,13 +80,13 @@
             class="marker">Xbox Series X</span> или <span class="marker">Sony PlayStation 5</span>! Заполни форму ниже и
           приложи скриншот о покупке игры. Итоги розыгрыша будут подведены 1 февраля. Удачи! ;)</p>
         <div class="col-5">
-          <form class="contact-form">
+          <form class="contact-form" id="game-form">
             <div class="contact-form_input">
-              <input type="text" name="" required="">
+              <input type="text" id="name" name="name" required>
               <label>Как тебя зовут?</label>
             </div>
             <div class="contact-form_input">
-              <input type="password" name="" required="">
+              <input type="email" id="email" name="email" required>
               <label>Твой e-mail</label>
             </div>
             <div class="contact-form_attach">
@@ -84,7 +96,10 @@
                 <input type="file" />
               </label>
             </div>
+            <p id="errorMessages"></p>
+            <button class="btn" type="submit">Отправить</button>
           </form>
+          <div id="loader">Отправка данных...</div> 
         </div>
         <div class="col-7">
           <div class="row">
@@ -118,12 +133,12 @@
             <li>Кристальная четкость изображения</li>
             <li>Быстрые движения и плавный геймплей</li>
           </ul>
-          <button class="btn btn-primary">Узнать больше</button>
+          <button class="btn btn-primary learn-more">Узнать больше</button>
         </div>
       </div>
     </div>
   </section>
-  <!-- <section class="buy-cyberpunk mt-0 mb-0 bg-black">
+   <section class="buy-cyberpunk mt-0 mb-0 bg-black" id="buy-game">
     <div class="container-fluid">
       <div class="row">
         <div class="col-6 buy-cyberpunk_bg">
@@ -150,7 +165,7 @@
         </div>
       </div>
     </div>
-  </section> -->
+  </section>
 
 
 
@@ -176,6 +191,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+  <script type="module" src="./src/scripts/main.js"></script>
 </body>
 
 </html>
