@@ -4,7 +4,7 @@ import { FormValidator } from './modules/FormValidator.js';
 
 document.addEventListener('click', handleClick);
 
-const slider = Slider.create(document.querySelector('.slider'));
+Slider.create(document.querySelector('.slider'));
 
 const formValidator = FormValidator.create(document.querySelector('#game-form'));
 
