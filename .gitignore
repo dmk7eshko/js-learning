@@ -10,7 +10,6 @@
 
 # production
 /build
-/week_2
 
 # misc
 .DS_Store
