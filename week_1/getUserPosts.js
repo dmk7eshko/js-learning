@@ -7,35 +7,25 @@
 // Используй fetch для выполнения запросов.
 // Обработай возможные ошибки с помощью catch.
 
+async function getUserPosts(userId) {
+    try {
+        const userResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+        if (!userResponse.ok) {
+            throw new Error(`Ошибка при получении данных пользователя: ${userResponse.statusText}`);
+        }
+        const user = await userResponse.json();
 
-function getUserPosts(userId) {
-    return new Promise((resolve, reject) => {
-        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(userData => {
-                return fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userData.id}`);
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(postsData => {
-                resolve(postsData);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                resolve(null);
-            });
-    });
+        const postsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`);
+        if (!postsResponse.ok) {
+            throw new Error(`Ошибка при получении постов пользователя: ${postsResponse.statusText}`);
+        }
+        const posts = await postsResponse.json();
+
+        return posts;
+    } catch (error) {
+        console.error('Ошибка:', error);
+        return [];
+    }
 }
 
-
-// Пример использования
 getUserPosts(1).then(posts => console.log(posts));

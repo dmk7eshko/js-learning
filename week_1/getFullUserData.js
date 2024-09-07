@@ -7,82 +7,27 @@
 // Собери все данные в следующую структуру:
 
 
+async function fetchDataFromUrls(urls) {
+    try {
+        const fetchPromises = urls.map(url => fetch(url).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }));
 
-function getFullUserData(userId) {
-    return new Promise((resolve) => {
-        const errors = {
-            userError: null,
-            postsError: null,
-            commentsErrors: []
-        };
-
-        // Получаем данные о пользователе
-        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(userData => {
-                // Получаем посты пользователя
-                return fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userData.id}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(postsData => {
-                        // Получаем комментарии для каждого поста
-                        const commentsPromises = postsData.map(post => {
-                            return fetch(`https://jsonplaceholder.typicode.com/comments?postId=${post.id}`)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error(`HTTP error! status: ${response.status}`);
-                                    }
-                                    return response.json()
-                                        .then(commentsData => ({
-                                            post,
-                                            comments: commentsData
-                                        }));
-                                })
-                                .catch(error => {
-                                    errors.commentsErrors.push({ postId: post.id, error: error.message });
-                                    return {
-                                        post,
-                                        comments: []
-                                    };
-                                });
-                        });
-
-                        return Promise.all(commentsPromises)
-                            .then(postsWithComments => ({
-                                user: userData,
-                                posts: postsWithComments,
-                                errors
-                            }));
-                    })
-                    .catch(error => {
-                        errors.postsError = error.message;
-                        return {
-                            user: userData,
-                            posts: [],
-                            errors
-                        };
-                    });
-            })
-            .catch(error => {
-                errors.userError = error.message;
-                resolve({
-                    user: null,
-                    posts: [],
-                    errors
-                });
-            })
-            .then(result => resolve(result)); // Возвращаем результат в любом случае
-    });
+        const data = await Promise.all(fetchPromises);
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
 }
 
-// Пример использования
-getFullUserData(1).then(data => console.log(data));
+const urls = [
+    'https://jsonplaceholder.typicode.com/posts/1',
+    'https://jsonplaceholder.typicode.com/posts/2',
+    'https://jsonplaceholder.typicode.com/posts/3'
+];
+
+fetchDataFromUrls(urls).then(data => console.log(data));
