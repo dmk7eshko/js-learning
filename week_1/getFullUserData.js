@@ -7,27 +7,62 @@
 // Собери все данные в следующую структуру:
 
 
-async function fetchDataFromUrls(urls) {
-    try {
-        const fetchPromises = urls.map(url => fetch(url).then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        }));
 
-        const data = await Promise.all(fetchPromises);
-        return data;
+async function getFullUserData(userId) {
+    const errors = {
+        userError: null,
+        postsError: null,
+        commentsErrors: []
+    };
+
+    try {
+        const userResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+        if (!userResponse.ok) {
+            throw new Error(`HTTP error! status: ${userResponse.status}`);
+        }
+        const userData = await userResponse.json();
+
+        const postsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userData.id}`);
+        if (!postsResponse.ok) {
+            throw new Error(`HTTP error! status: ${postsResponse.status}`);
+        }
+        const postsData = await postsResponse.json();
+
+        const postsWithCommentsPromises = postsData.map(async post => {
+            try {
+                const commentsResponse = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${post.id}`);
+                if (!commentsResponse.ok) {
+                    throw new Error(`HTTP error! status: ${commentsResponse.status}`);
+                }
+                const commentsData = await commentsResponse.json();
+                return {
+                    post,
+                    comments: commentsData
+                };
+            } catch (error) {
+                errors.commentsErrors.push({ postId: post.id, error: error.message });
+                return {
+                    post,
+                    comments: []
+                };
+            }
+        });
+
+        const postsWithComments = await Promise.all(postsWithCommentsPromises);
+
+        return {
+            user: userData,
+            posts: postsWithComments,
+            errors
+        };
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;
+        errors.userError = error.message;
+        return {
+            user: null,
+            posts: [],
+            errors
+        };
     }
 }
 
-const urls = [
-    'https://jsonplaceholder.typicode.com/posts/1',
-    'https://jsonplaceholder.typicode.com/posts/2',
-    'https://jsonplaceholder.typicode.com/posts/3'
-];
-
-fetchDataFromUrls(urls).then(data => console.log(data));
+getFullUserData(1).then(data => console.log(data));
