@@ -1,4 +1,4 @@
-import { setActiveSlide, scrollToElement } from './domManipulation.js';
+import { scrollToElement } from './domManipulation.js';
 
 export function handleClick(event) {
   if (event.target.matches('.learn-more')) {
