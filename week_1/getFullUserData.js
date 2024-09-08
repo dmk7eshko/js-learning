@@ -48,7 +48,19 @@ async function getFullUserData(userId) {
             }
         });
 
-        const postsWithComments = await Promise.all(postsWithCommentsPromises);
+         const postsWithCommentsResults = await Promise.allSettled(postsWithCommentsPromises);
+
+         const postsWithComments = postsWithCommentsResults.map(result => {
+             if (result.status === 'fulfilled') {
+                 return result.value;
+             } else {
+                 errors.commentsErrors.push({ postId: result.reason.postId, error: result.reason.message });
+                 return {
+                     post: result.reason.post,
+                     comments: []
+                 };
+             }
+         });
 
         return {
             user: userData,
